@@ -43,8 +43,8 @@ export default function Home() {
         <section className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden pt-28 pb-12 sm:min-h-0 sm:pt-44 sm:pb-24">
           <div className="bg-grid bg-grid-animated pointer-events-none absolute inset-0" />
           <div className="hero-glow glow-drift pointer-events-none absolute inset-0" />
-          <Container className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
-            <div>
+          <Container className="relative grid items-center gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-14">
+            <div className="min-w-0">
             {/* Name badge — shows a round avatar on phones/tablets */}
             <div
               className="fade-up mb-7 inline-flex max-w-full items-center gap-2.5 rounded-full border border-line bg-panel/70 py-1 pr-3 pl-1 text-[11px] text-muted backdrop-blur sm:mb-8 sm:text-xs lg:pl-3"

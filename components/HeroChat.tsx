@@ -127,10 +127,10 @@ function SuggestionRail({ items, disabled, onPick }: { items: string[]; disabled
   const nudge = (dir: 1 | -1) => rail.current?.scrollBy({ left: dir * 220, behavior: "smooth" });
 
   return (
-    <div className="group/rail relative border-t border-line">
+    <div className="group/rail relative min-w-0 border-t border-line">
       <div
         ref={rail}
-        className="no-scrollbar flex cursor-grab gap-2 overflow-x-auto scroll-smooth px-3 pt-3 select-none active:cursor-grabbing"
+        className="no-scrollbar flex w-full min-w-0 cursor-grab gap-2 overflow-x-auto scroll-smooth px-3 pt-3 select-none active:cursor-grabbing"
         onPointerDown={(e) => {
           if (e.pointerType !== "mouse" || !rail.current) return;
           drag.current = { down: true, startX: e.clientX, startLeft: rail.current.scrollLeft, moved: false };
@@ -276,12 +276,12 @@ export function HeroChat() {
   }
 
   return (
-    <div className="photo-in relative w-full">
+    <div className="photo-in relative w-full min-w-0 max-w-full">
       {/* soft glow + animated gradient border */}
       <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-accent/[0.07] blur-3xl" />
       <div className="chat-ring pointer-events-none absolute -inset-px rounded-2xl" />
 
-      <div className="relative flex flex-col overflow-hidden rounded-2xl border border-line-strong bg-panel/90 shadow-2xl shadow-black/60 backdrop-blur-xl">
+      <div className="relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-line-strong bg-panel/90 shadow-2xl shadow-black/60 backdrop-blur-xl">
         {/* Header */}
         <div className="flex items-center gap-3 border-b border-line px-4 py-3">
           <div className="relative shrink-0">
