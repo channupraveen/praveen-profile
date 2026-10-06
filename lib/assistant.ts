@@ -1,6 +1,6 @@
 // Knowledge + fallback answers for the "Ask about Praveen" chat.
 // Everything is generated from lib/data.ts, so editing data.ts updates the chat too.
-import { education, experience, projects, site, skills } from "./data";
+import { education, experience, projects, recruiter, site, skills } from "./data";
 
 const skillNames = (group: string) =>
   skills
@@ -30,6 +30,7 @@ export function buildKnowledge(): string {
 ROLE: Software Engineer and AI Engineer (Python full stack + AI), 3+ years of professional experience
 LOCATION: Hyderabad, India
 CONTACT: email ${site.email} · LinkedIn ${site.linkedin} · GitHub ${site.github}
+LOOKING FOR: ${recruiter.lookingFor}${recruiter.workRights ? `\nWORK RIGHTS: ${recruiter.workRights}` : ""}${recruiter.notice ? `\nNOTICE PERIOD: ${recruiter.notice}` : ""}
 
 EXPERIENCE:
 ${jobs}

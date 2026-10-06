@@ -1,34 +1,27 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { site } from "@/lib/data";
-import { GitHubIcon, LinkedInIcon, MailIcon } from "./Icons";
 
 export function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <div className={`mx-auto w-full max-w-6xl px-5 sm:px-8 ${className}`}>{children}</div>;
 }
 
+/** Small sentence-case label. Used sparingly, only where it carries information. */
 export function Eyebrow({ children }: { children: ReactNode }) {
-  return (
-    <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-accent/90">{children}</p>
-  );
+  return <p className="mb-3 text-sm text-muted">{children}</p>;
 }
 
-export function SectionHeading({ eyebrow, title, intro }: { eyebrow: string; title: string; intro?: string }) {
+export function SectionHeading({ title, intro }: { eyebrow?: string; title: string; intro?: string }) {
   return (
-    <div className="mb-10 max-w-2xl sm:mb-12">
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{title}</h2>
-      {intro && <p className="mt-4 text-base leading-relaxed text-muted text-pretty">{intro}</p>}
+    <div className="mb-10 max-w-2xl sm:mb-14">
+      <h2 className="text-[2rem] leading-[1.1] font-semibold tracking-[-0.02em] text-balance sm:text-[2.75rem]">{title}</h2>
+      {intro && <p className="mt-4 text-[17px] leading-relaxed text-muted text-pretty">{intro}</p>}
     </div>
   );
 }
 
 export function Badge({ children }: { children: ReactNode }) {
-  return (
-    <span className="inline-flex items-center rounded-md border border-line bg-panel-2 px-2 py-0.5 font-mono text-[11px] text-muted">
-      {children}
-    </span>
-  );
+  return <span className="text-sm text-muted">{children}</span>;
 }
 
 type BtnProps = {
@@ -40,11 +33,11 @@ type BtnProps = {
 
 export function Button({ href, children, variant = "secondary", external }: BtnProps) {
   const base =
-    "btn-arrow press inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+    "press inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2 text-[15px] font-medium transition-colors duration-200";
   const styles = {
-    primary: "bg-fg text-bg hover:bg-white",
-    secondary: "border border-line-strong bg-panel text-fg hover:border-fg/30 hover:bg-panel-2",
-    ghost: "text-muted hover:text-fg",
+    primary: "bg-fg text-panel hover:bg-accent",
+    secondary: "border border-line-strong bg-panel text-fg hover:border-fg",
+    ghost: "link px-1 text-fg",
   }[variant];
   const cls = `${base} ${styles}`;
   if (external || href.startsWith("http") || href.startsWith("mailto:")) {
@@ -63,32 +56,22 @@ export function Button({ href, children, variant = "secondary", external }: BtnP
 
 export function Footer() {
   return (
-    <footer className="border-t border-line pt-12 pb-28 md:pb-12">
-      <Container className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="font-medium">{site.name}</p>
-          <p className="mt-1 text-sm text-muted">{site.role}</p>
-          <p className="mt-3 text-sm text-faint">Building practical software and AI systems.</p>
-        </div>
-        <div className="flex flex-col gap-4 sm:items-end">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-muted">
-            <a href={site.github} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-fg">
-              <GitHubIcon /> GitHub
-            </a>
-            <a href={site.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-fg">
-              <LinkedInIcon /> LinkedIn
-            </a>
-            {site.email ? (
-              <a href={`mailto:${site.email}`} className="flex items-center gap-1.5 hover:text-fg">
-                <MailIcon /> Contact
-              </a>
-            ) : (
-              <a href="/#contact" className="flex items-center gap-1.5 hover:text-fg">
-                <MailIcon /> Contact
-              </a>
-            )}
-          </div>
-          <p className="font-mono text-xs text-faint">© 2026 {site.name}</p>
+    <footer className="border-t border-line pt-10 pb-28 md:pb-10">
+      <Container className="flex flex-col gap-4 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+        <p>
+          <span className="text-fg">{site.name}</span>, software and AI engineer in Hyderabad.
+        </p>
+        <div className="flex flex-wrap gap-x-6 gap-y-2">
+          <a href={`mailto:${site.email}`} className="link">
+            Email
+          </a>
+          <a href={site.linkedin} target="_blank" rel="noreferrer" className="link">
+            LinkedIn
+          </a>
+          <a href={site.github} target="_blank" rel="noreferrer" className="link">
+            GitHub
+          </a>
+          <span className="text-faint">© 2026</span>
         </div>
       </Container>
     </footer>

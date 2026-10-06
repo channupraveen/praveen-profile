@@ -5,9 +5,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ArchDiagram } from "@/components/ArchDiagram";
 import { Benchmark } from "@/components/Benchmark";
-import { ArrowLeft, ArrowRight, ArrowUpRight, GitHubIcon } from "@/components/Icons";
-import { Reveal } from "@/components/Reveal";
-import { Badge, Button, Container, Eyebrow, Footer } from "@/components/ui";
+import { Button, Container, Footer } from "@/components/ui";
 import { projects } from "@/lib/data";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -22,22 +20,19 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const p = projects.find((x) => x.slug === slug);
   if (!p) return {};
-  return { title: `${p.name} — ${p.tagline}`, description: p.description };
+  return { title: `${p.name}, ${p.tagline}`, description: p.description };
 }
 
-function Block({ id, n, title, children }: { id?: string; n: number; title: string; children: ReactNode }) {
+function Block({ id, title, children }: { id?: string; title: string; children: ReactNode }) {
   return (
-    <Reveal>
-      <section id={id} className="grid gap-4 border-t border-line py-12 md:grid-cols-[220px_1fr] md:gap-12">
-        <div className="flex items-baseline gap-3 md:block">
-          <p className="font-mono text-[11px] text-faint">{String(n).padStart(2, "0")}</p>
-          <h2 className="text-lg font-medium md:mt-2">{title}</h2>
-        </div>
-        <div className="min-w-0">{children}</div>
-      </section>
-    </Reveal>
+    <section id={id} className="grid gap-4 border-t border-line py-12 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-12">
+      <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
+      <div className="min-w-0">{children}</div>
+    </section>
   );
 }
+
+const prose = "max-w-[42rem] text-[17px] leading-relaxed text-fg/85";
 
 export default async function CaseStudy({ params }: Params) {
   const { slug } = await params;
@@ -46,107 +41,73 @@ export default async function CaseStudy({ params }: Params) {
   const p = projects[idx];
   const next = projects[(idx + 1) % projects.length];
 
-  const order = [
-    p.problem && "Problem",
-    p.why && "Why",
-    p.solution && "Solution",
-    p.aiFeatures && "AI",
-    "Architecture",
-    p.decisions && "Decisions",
-    p.challenges && "Challenges",
-    "Implementation",
-    p.screenshots?.length && "Screenshots",
-    p.benchmark && "Results",
-    "Technology",
-    "Learned",
-  ].filter(Boolean);
-  const num = (key: string) => order.indexOf(key) + 1;
-
   return (
     <>
       <main className="flex-1">
-        {/* Header */}
-        <header className="relative overflow-hidden pt-32 pb-16 sm:pt-40">
-          <div className="bg-grid pointer-events-none absolute inset-0" />
-          <div className="hero-glow pointer-events-none absolute inset-0" />
-          <Container className="relative">
-            <Link href="/#work" className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-fg">
-              <ArrowLeft /> All work
+        <header className="pt-28 pb-14 sm:pt-36">
+          <Container>
+            <Link href="/#work" className="link text-[15px] text-muted">
+              Back to all work
             </Link>
-            <Reveal className="mt-10">
-              <Eyebrow>Case Study · {p.tagline}</Eyebrow>
-              <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">{p.name}</h1>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted text-pretty">{p.description}</p>
-              <div className="mt-8 flex flex-wrap gap-2">
-                {p.demo && (
-                  <Button href={p.demo} variant="primary">
-                    {p.primaryCta === "demo" ? "Live Demo" : "Website"} <ArrowUpRight />
-                  </Button>
-                )}
-                {p.github && (
-                  <Button href={p.github} variant={p.demo ? "secondary" : "primary"}>
-                    <GitHubIcon /> GitHub
-                  </Button>
-                )}
-              </div>
-              <div className="mt-8 flex flex-wrap gap-1.5">
-                {p.tech.map((t) => (
-                  <Badge key={t}>{t}</Badge>
-                ))}
-              </div>
-            </Reveal>
+            <p className="mt-10 text-[15px] text-muted">{p.tagline}</p>
+            <h1 className="mt-2 text-[2.75rem] leading-[1.02] font-bold tracking-[-0.035em] sm:text-[4.25rem]">{p.name}</h1>
+            <p className="mt-6 max-w-[40rem] text-lg leading-relaxed text-muted">{p.description}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              {p.demo && (
+                <Button href={p.demo} variant="primary">
+                  {p.primaryCta === "demo" ? "Try the live demo" : "Visit the website"}
+                </Button>
+              )}
+              {p.github && (
+                <Button href={p.github} variant={p.demo ? "secondary" : "primary"}>
+                  Source on GitHub
+                </Button>
+              )}
+            </div>
+            <p className="mt-8 max-w-[42rem] text-[15px] text-muted">
+              <span className="text-fg">Built with</span> {p.tech.join(", ")}.
+            </p>
           </Container>
         </header>
 
         <Container className="pb-16">
           {p.problem && (
-            <Block n={num("Problem")} title="Problem">
-              <p className="max-w-2xl text-[17px] leading-relaxed text-muted">{p.problem}</p>
+            <Block title="The problem">
+              <p className={prose}>{p.problem}</p>
             </Block>
           )}
-
           {p.why && (
-            <Block n={num("Why")} title="Why I built it">
-              <p className="max-w-2xl text-[17px] leading-relaxed text-muted">{p.why}</p>
+            <Block title="Why I built it">
+              <p className={prose}>{p.why}</p>
             </Block>
           )}
-
           {p.solution && (
-            <Block n={num("Solution")} title="Solution">
-              <p className="max-w-2xl text-[17px] leading-relaxed text-muted">{p.solution}</p>
+            <Block title="What I built">
+              <p className={prose}>{p.solution}</p>
             </Block>
           )}
 
           {p.aiFeatures && (
-            <Block id="ai" n={num("AI")} title="AI features">
-              <div className="grid gap-4 sm:grid-cols-2">
-                {p.aiFeatures.map((f, i) => (
-                  <div
-                    key={f.title}
-                    className="group relative overflow-hidden rounded-xl border border-accent/20 bg-accent/[0.03] p-5 transition-colors hover:border-accent/40"
-                  >
-                    <p className="font-mono text-[10.5px] text-accent/80">AI.{String(i + 1).padStart(2, "0")}</p>
-                    <h3 className="mt-2 font-medium">{f.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">{f.body}</p>
+            <Block id="ai" title="What the AI does">
+              <dl className="grid max-w-[52rem] gap-x-10 gap-y-7 sm:grid-cols-2">
+                {p.aiFeatures.map((f) => (
+                  <div key={f.title} className="border-t-2 border-accent pt-3">
+                    <dt className="font-medium">{f.title}</dt>
+                    <dd className="mt-1.5 text-[15px] leading-relaxed text-muted">{f.body}</dd>
                   </div>
                 ))}
-              </div>
+              </dl>
             </Block>
           )}
 
-          <Block id="architecture" n={num("Architecture")} title="Architecture">
-            <div className={`grid gap-4 ${p.secondaryArchitecture ? "lg:grid-cols-[1.4fr_1fr]" : ""}`}>
-              <div className="relative overflow-hidden rounded-xl border border-line bg-panel/60 px-4 py-10">
-                <div className="bg-grid pointer-events-none absolute inset-0 opacity-60" />
-                <div className="relative">
-                  <ArchDiagram layers={p.architecture} />
-                </div>
+          <Block id="architecture" title="How it's put together">
+            <div className={`grid gap-4 ${p.secondaryArchitecture ? "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]" : ""}`}>
+              <div className="rounded-2xl border border-line bg-panel px-4 py-8">
+                <ArchDiagram layers={p.architecture} />
               </div>
               {p.secondaryArchitecture && (
-                <div className="relative flex flex-col justify-center overflow-hidden rounded-xl border border-line bg-panel/60 px-4 py-10">
-                  <p className="mb-6 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
-                    {p.secondaryArchitecture.label}
-                  </p>
+                <div className="flex flex-col justify-center rounded-2xl border border-line bg-panel px-4 py-8">
+                  <p className="mb-5 text-center text-sm text-muted">{p.secondaryArchitecture.label}</p>
                   <ArchDiagram layers={p.secondaryArchitecture.layers} />
                 </div>
               )}
@@ -154,47 +115,44 @@ export default async function CaseStudy({ params }: Params) {
           </Block>
 
           {p.decisions && (
-            <Block n={num("Decisions")} title="Key technical decisions">
-              <div className="grid gap-4 sm:grid-cols-2">
+            <Block title="Decisions I made">
+              <dl className="max-w-[44rem] space-y-6">
                 {p.decisions.map((d) => (
-                  <div key={d.title} className="rounded-xl border border-line bg-panel/60 p-5">
-                    <h3 className="font-medium">{d.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">{d.body}</p>
+                  <div key={d.title}>
+                    <dt className="font-medium">{d.title}</dt>
+                    <dd className="mt-1.5 text-[16px] leading-relaxed text-muted">{d.body}</dd>
                   </div>
                 ))}
-              </div>
+              </dl>
             </Block>
           )}
 
           {p.challenges && (
-            <Block n={num("Challenges")} title="Challenges">
-              <div className="space-y-6">
+            <Block title="What was hard">
+              <dl className="max-w-[44rem] space-y-6">
                 {p.challenges.map((c) => (
-                  <div key={c.title} className="border-l border-line-strong pl-5">
-                    <h3 className="font-medium">{c.title}</h3>
-                    <p className="mt-1.5 max-w-2xl leading-relaxed text-muted">{c.body}</p>
+                  <div key={c.title}>
+                    <dt className="font-medium">{c.title}</dt>
+                    <dd className="mt-1.5 text-[16px] leading-relaxed text-muted">{c.body}</dd>
                   </div>
                 ))}
-              </div>
+              </dl>
             </Block>
           )}
 
-          <Block n={num("Implementation")} title="Implementation">
-            <ul className="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+          <Block title="What's in it">
+            <ul className="grid max-w-[52rem] list-disc gap-x-10 gap-y-2 pl-5 text-[16px] text-fg/85 marker:text-line-strong sm:grid-cols-2">
               {p.highlights.map((h) => (
-                <li key={h} className="flex gap-3 text-fg/85">
-                  <span className="mt-2.5 size-1 shrink-0 rounded-full bg-accent/70" />
-                  {h}
-                </li>
+                <li key={h}>{h}</li>
               ))}
             </ul>
           </Block>
 
           {p.screenshots && p.screenshots.length > 0 && (
-            <Block n={num("Screenshots")} title="Screenshots">
+            <Block title="Screenshots">
               <div className="grid gap-4">
                 {p.screenshots.map((s) => (
-                  <div key={s.src} className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line bg-panel">
+                  <div key={s.src} className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-line bg-panel">
                     <Image src={s.src} alt={s.alt} fill className="object-cover object-top" sizes="(min-width: 1024px) 800px, 100vw" />
                   </div>
                 ))}
@@ -203,53 +161,31 @@ export default async function CaseStudy({ params }: Params) {
           )}
 
           {p.benchmark && (
-            <Block n={num("Results")} title="Results">
+            <Block title="Results">
               <div className="max-w-xl">
                 <Benchmark data={p.benchmark} />
               </div>
             </Block>
           )}
 
-          <Block n={num("Technology")} title="Technology">
-            <div className="flex flex-wrap gap-2">
-              {p.tech.map((t) => (
-                <span key={t} className="rounded-md border border-line bg-panel px-2.5 py-1 text-sm text-fg/90">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </Block>
-
-          <Block n={num("Learned")} title="What I learned">
+          <Block title="What I learned">
             {p.learned && (
-              <ul className="mb-6 space-y-2.5">
+              <ul className="max-w-[44rem] list-disc space-y-2 pl-5 text-[16px] text-fg/85 marker:text-line-strong">
                 {p.learned.map((l) => (
-                  <li key={l} className="flex gap-3 text-fg/85">
-                    <span className="mt-2.5 size-1 shrink-0 rounded-full bg-accent/70" />
-                    {l}
-                  </li>
+                  <li key={l}>{l}</li>
                 ))}
               </ul>
             )}
-            <blockquote className="max-w-2xl border-l-2 border-accent/60 pl-5 text-[17px] leading-relaxed text-fg/90">
-              {p.takeaway}
-            </blockquote>
+            <p className="mt-6 max-w-[42rem] font-display text-xl leading-snug font-semibold">{p.takeaway}</p>
           </Block>
 
-          {/* Next project */}
-          <Reveal>
-            <Link
-              href={`/work/${next.slug}`}
-              className="group mt-8 flex items-center justify-between gap-6 rounded-2xl border border-line bg-panel/60 p-7 transition-colors hover:border-line-strong sm:p-9"
-            >
-              <div>
-                <p className="font-mono text-[11px] uppercase tracking-wider text-faint">Next project</p>
-                <p className="mt-2 text-2xl font-semibold tracking-tight">{next.name}</p>
-                <p className="mt-1 text-sm text-muted">{next.tagline}</p>
-              </div>
-              <ArrowRight className="size-5 shrink-0 text-muted transition-transform group-hover:translate-x-1 group-hover:text-fg" />
-            </Link>
-          </Reveal>
+          <Link href={`/work/${next.slug}`} className="group mt-6 block border-t border-line pt-10">
+            <p className="text-[15px] text-muted">Next project</p>
+            <p className="mt-2 text-[2rem] leading-tight font-bold tracking-[-0.03em] transition-colors group-hover:text-accent sm:text-[2.6rem]">
+              {next.name}
+            </p>
+            <p className="mt-1 text-[15px] text-muted">{next.tagline}</p>
+          </Link>
         </Container>
       </main>
       <Footer />

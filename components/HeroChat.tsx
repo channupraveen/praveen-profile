@@ -23,7 +23,7 @@ const SUGGESTIONS = [
 ];
 
 const WELCOME =
-  "Hi, I'm Praveen's AI assistant. Ask me anything about his **experience**, **AI projects**, **skills** — or why he'd be a great hire.";
+  "Hi. I can answer questions about Praveen's experience, projects and skills, using his CV and project notes. What would you like to know?";
 
 /* ───────── tiny markdown: paragraphs, "- " bullets, **bold** ───────── */
 function inline(text: string): ReactNode[] {
@@ -166,7 +166,7 @@ function SuggestionRail({ items, disabled, onPick }: { items: string[]; disabled
             type="button"
             disabled={disabled}
             onClick={() => onPick(s)}
-            className="press shrink-0 rounded-full border border-line-strong bg-bg/50 px-3 py-1.5 text-xs text-muted transition-colors hover:border-accent/50 hover:text-fg disabled:opacity-40"
+            className="press shrink-0 rounded-full bg-panel-2 px-3 py-1.5 text-[13px] text-fg/80 transition-colors hover:bg-accent hover:text-panel disabled:opacity-40"
           >
             {s}
           </button>
@@ -183,14 +183,14 @@ function SuggestionRail({ items, disabled, onPick }: { items: string[]; disabled
           key={side}
           className={`pointer-events-none absolute top-3 bottom-0 flex w-14 items-start transition-opacity duration-200 ${
             side === "left" ? "left-0 justify-start bg-gradient-to-r pl-2" : "right-0 justify-end bg-gradient-to-l pr-2"
-          } from-panel via-panel/80 to-transparent ${show ? "opacity-100" : "opacity-0"}`}
+          } from-panel via-panel/90 to-transparent ${show ? "opacity-100" : "opacity-0"}`}
         >
           <button
             type="button"
             tabIndex={show ? 0 : -1}
             aria-label={side === "left" ? "Previous suggestions" : "More suggestions"}
             onClick={() => nudge(dir)}
-            className={`press grid size-[30px] place-items-center rounded-full border border-line-strong bg-panel-2 text-muted shadow-lg shadow-black/40 transition-colors hover:border-accent/50 hover:text-fg ${
+            className={`press grid size-[30px] place-items-center rounded-full border border-line-strong bg-panel text-muted shadow-sm transition-colors hover:border-fg hover:text-fg ${
               show ? "pointer-events-auto" : ""
             }`}
           >
@@ -277,11 +277,7 @@ export function HeroChat() {
 
   return (
     <div className="photo-in relative w-full min-w-0 max-w-full">
-      {/* soft glow + animated gradient border */}
-      <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-accent/[0.07] blur-3xl" />
-      <div className="chat-ring pointer-events-none absolute -inset-px rounded-2xl" />
-
-      <div className="relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-line-strong bg-panel/90 shadow-2xl shadow-black/60 backdrop-blur-xl">
+      <div className="relative flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-line-strong bg-panel shadow-[0_30px_60px_-30px_rgba(21,23,28,0.35)]">
         {/* Header */}
         <div className="flex items-center gap-3 border-b border-line px-4 py-3">
           <div className="relative shrink-0">
@@ -293,15 +289,12 @@ export function HeroChat() {
               placeholder="blur"
               className="size-9 rounded-full object-cover object-[48%_15%] ring-1 ring-line-strong"
             />
-            <span className="pulse-dot absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full border-2 border-panel bg-accent" />
+            <span className="absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full border-2 border-panel bg-[#1f9d55]" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium">Ask about Praveen</p>
-            <p className="truncate text-[11px] text-muted">AI assistant · answers from his CV & projects</p>
+            <p className="truncate font-display text-[15px] font-semibold">Ask about Praveen</p>
+            <p className="truncate text-xs text-muted">An AI assistant that has read his CV</p>
           </div>
-          <span className="flex shrink-0 items-center gap-1 rounded-full border border-accent/30 bg-accent/[0.08] px-2 py-0.5 font-mono text-[10px] text-accent">
-            <Sparkle className="size-3" /> AI
-          </span>
         </div>
 
         {/* Messages */}
@@ -313,16 +306,16 @@ export function HeroChat() {
           {messages.map((m) =>
             m.role === "user" ? (
               <div key={m.id} className="msg-in flex justify-end">
-                <div className="max-w-[85%] rounded-2xl rounded-br-md bg-fg px-3.5 py-2 text-sm leading-relaxed text-bg">
+                <div className="max-w-[85%] rounded-[18px] rounded-br-[6px] bg-fg px-3.5 py-2 text-[15px] leading-relaxed text-panel">
                   {m.content}
                 </div>
               </div>
             ) : (
               <div key={m.id} className="msg-in flex gap-3">
-                <div className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-accent/90 to-emerald-700 text-bg">
+                <div className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-accent text-panel">
                   <Sparkle />
                 </div>
-                <div className="min-w-0 flex-1 text-sm leading-relaxed text-fg/85">
+                <div className="min-w-0 flex-1 text-[15px] leading-relaxed text-fg/90">
                   {m.animate ? <Typewriter text={m.content} onTick={onTick} /> : <RichText text={m.content} />}
                 </div>
               </div>
@@ -331,10 +324,10 @@ export function HeroChat() {
 
           {loading && (
             <div className="msg-in flex items-center gap-3">
-              <div className="grid size-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-accent/90 to-emerald-700 text-bg">
+              <div className="grid size-7 shrink-0 place-items-center rounded-full bg-accent text-panel">
                 <Sparkle />
               </div>
-              <div className="typing flex items-center gap-1 rounded-full border border-line bg-panel-2 px-3 py-2.5">
+              <div className="typing flex items-center gap-1 rounded-full bg-panel-2 px-3 py-2.5">
                 <span />
                 <span />
                 <span />
@@ -348,7 +341,7 @@ export function HeroChat() {
 
         {/* Input */}
         <form onSubmit={onSubmit} className="p-3">
-          <div className="flex items-end gap-2 rounded-xl border border-line-strong bg-bg/60 p-1.5 pl-3.5 transition-colors focus-within:border-accent/50">
+          <div className="flex items-end gap-2 rounded-2xl border border-line-strong bg-bg p-1.5 pl-3.5 transition-colors focus-within:border-accent">
             <textarea
               ref={field}
               rows={1}
@@ -360,7 +353,7 @@ export function HeroChat() {
                 e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
               }}
               onKeyDown={onKeyDown}
-              placeholder="Ask about experience, AI work, skills…"
+              placeholder="Ask a question about Praveen"
               aria-label="Ask a question about Praveen"
               className="max-h-[120px] min-h-9 flex-1 resize-none bg-transparent py-2 text-base text-fg placeholder:text-faint focus:outline-none sm:text-sm"
             />
@@ -368,14 +361,14 @@ export function HeroChat() {
               type="submit"
               disabled={!input.trim() || loading}
               aria-label="Send"
-              className="press grid size-9 shrink-0 place-items-center rounded-lg bg-fg text-bg transition-opacity disabled:opacity-25"
+              className="press grid size-9 shrink-0 place-items-center rounded-xl bg-accent text-panel transition-opacity disabled:opacity-25"
             >
               <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M12 19V5M5 12l7-7 7 7" />
               </svg>
             </button>
           </div>
-          <p className="mt-2 text-center text-[10.5px] text-faint">AI answers can be imperfect — the CV is the source of truth.</p>
+          <p className="mt-2 text-center text-[11px] text-faint">Answers can be wrong. The CV is the source of truth.</p>
         </form>
       </div>
     </div>

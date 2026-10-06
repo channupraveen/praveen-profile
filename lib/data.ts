@@ -18,6 +18,27 @@ export const site = {
   cv: "/Channu-Praveen-Kumar-CV.pdf",
 };
 
+/**
+ * What UK recruiters and agencies look for first.
+ * Empty strings are hidden on the site — fill them in when you know the answer.
+ */
+export const recruiter = {
+  title: "Python Full Stack & AI Engineer",
+  years: "3+ years",
+  location: "Hyderabad, India",
+  lookingFor: "Software engineer, Python / full stack developer and AI engineer roles",
+  workRights: "", // e.g. "Requires UK visa sponsorship" or "Open to relocation to the UK"
+  notice: "", // e.g. "Available immediately" or "1 month notice"
+  coreStack: ["Python", "FastAPI", "Django", "PostgreSQL", "Angular", "TypeScript"],
+  aiStack: ["OpenAI GPT-4o", "Groq / Llama 3.3", "Speech-to-text & TTS", "Ollama"],
+  proof: [
+    { value: "10+", label: "product modules built in AIOpsCare, from tickets to compliance" },
+    { value: "4", label: "languages understood by the voice assistant I built" },
+    { value: "1.66×", label: "measured speedup from SwarmAI across two machines" },
+    { value: "3", label: "companies, building production software since 2022" },
+  ],
+};
+
 export const experience = [
   {
     role: "Founder & Lead Engineer",
