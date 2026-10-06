@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Praveen Kumar — Portfolio
 
-## Getting Started
+Personal portfolio of **Praveen Kumar**, Software Engineer & AI Engineer (Python full stack + AI, 3+ years).
 
-First, run the development server:
+It includes an **AI chat assistant** in the hero section that answers recruiters' questions — experience, projects, skills, "why hire him" — using Llama 3.3 on Groq, grounded only in the site's own data.
+
+<!-- Add your live URL after deploying: **Live:** https://your-site.vercel.app -->
+
+## Features
+
+- **AI chat assistant** — ChatGPT-style interface, typing animation, suggested questions (scroll with wheel, drag or arrows). Uses Groq when `GROQ_API_KEY` is set, and falls back to built-in answers from the CV data when it isn't, so it never breaks.
+- **Project case studies** — AIOpsCare, SwarmAI, DevSparkAI Social Hub and AI Agent Job Applier, each with animated architecture diagrams, technical decisions, challenges and results.
+- **Experience timeline, skills and CV download.**
+- **Mobile-first** — app-style bottom navigation, safe-area support, installable to the home screen (web manifest).
+- **Motion with restraint** — scroll reveals, animated data-flow diagrams, cursor spotlight; all disabled when the visitor prefers reduced motion.
+- **SEO** — page metadata, Open Graph and per-project titles.
+
+## Tech stack
+
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Groq API (Llama 3.3 70B)
+
+No UI or animation libraries — all components and animations are hand-built.
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local   # then add your Groq key (optional)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Description |
+| --- | --- | --- |
+| `GROQ_API_KEY` | No | Groq API key ([get one free](https://console.groq.com/keys)). Without it, the chat uses built-in answers. |
+| `GROQ_MODEL` | No | Model name. Defaults to `llama-3.3-70b-versatile`. |
 
-## Learn More
+Never commit `.env.local` — it is already in `.gitignore`.
 
-To learn more about Next.js, take a look at the following resources:
+## Editing content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All site content lives in **`lib/data.ts`**: profile links, experience, projects, skills and education. The AI chat builds its knowledge from the same file, so updating it updates the chat too.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Profile photo:** `public/img.jpeg`
+- **CV:** save the PDF as `public/Channu-Praveen-Kumar-CV.pdf`
+- **Project screenshots:** add images to `public/projects/` and list them in each project's `screenshots`
 
-## Deploy on Vercel
+## Project structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+app/
+  page.tsx              Homepage (hero + chat, work, skills, experience, contact)
+  work/[slug]/page.tsx  Project case study pages
+  api/chat/route.ts     Chat API (Groq + fallback)
+  layout.tsx            Metadata, fonts, navigation
+  manifest.ts           Web app manifest
+components/
+  HeroChat.tsx          AI chat interface
+  ArchDiagram.tsx       Animated architecture diagrams
+  ProjectCard.tsx       Project cards
+  Nav.tsx, MobileDock.tsx
+lib/
+  data.ts               All site content
+  assistant.ts          Chat system prompt, knowledge and fallback answers
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+Deploy on [Vercel](https://vercel.com/new): import this repository and add `GROQ_API_KEY` under **Environment Variables**. Every push to `main` redeploys automatically.
+
+## Contact
+
+- Email: channupraveen66@gmail.com
+- LinkedIn: [praveen-kumar2001](https://www.linkedin.com/in/praveen-kumar2001)
+- GitHub: [channupraveen](https://github.com/channupraveen)
